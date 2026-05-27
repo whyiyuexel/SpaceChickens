@@ -42,7 +42,7 @@ public class ShootingController : MonoBehaviour
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
-                bulletScript.Initialize(direction, currentGun.bulletSpeed, currentGun.bulletLifetime);
+                bulletScript.Initialize(direction, currentGun.bulletSpeed, currentGun.bulletLifetime, true);
             }
         }
     }

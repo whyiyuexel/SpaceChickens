@@ -4,12 +4,30 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float dodgeDistance = 4f;
+    public float dodgeDuration = 0.1f;
+    public float dodgeCooldown = 1f;
 
-    private Vector2 inputVector;
     private Vector3 movement;
+    private Vector3 lastMoveDirection = Vector3.forward;
+    private bool isDodging;
+    private float dodgeTimer;
+    private float nextDodgeTime;
+    private Vector3 dodgeDirection;
 
     void Update()
     {
+        if (isDodging)
+        {
+            dodgeTimer += Time.deltaTime;
+            transform.position += dodgeDirection * (dodgeDistance / dodgeDuration) * Time.deltaTime;
+
+            if (dodgeTimer >= dodgeDuration)
+                isDodging = false;
+
+            return;
+        }
+
         Keyboard kb = Keyboard.current;
         if (kb == null) return;
 
@@ -23,6 +41,17 @@ public class PlayerMovement : MonoBehaviour
 
         movement = new Vector3(horizontal, 0f, vertical).normalized;
 
+        if (movement.sqrMagnitude > 0)
+            lastMoveDirection = movement;
+
         transform.position += movement * moveSpeed * Time.deltaTime;
+
+        if (kb.leftShiftKey.wasPressedThisFrame && Time.time >= nextDodgeTime)
+        {
+            isDodging = true;
+            dodgeTimer = 0f;
+            dodgeDirection = lastMoveDirection;
+            nextDodgeTime = Time.time + dodgeCooldown;
+        }
     }
 }

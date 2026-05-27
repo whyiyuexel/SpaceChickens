@@ -4,13 +4,15 @@ public class Bullet : MonoBehaviour
 {
     private Vector3 direction;
     private float speed;
+    private bool firedByPlayer;
 
     public int damage = 1;
 
-    public void Initialize(Vector3 direction, float speed, float lifetime)
+    public void Initialize(Vector3 direction, float speed, float lifetime, bool firedByPlayer)
     {
         this.direction = direction;
         this.speed = speed;
+        this.firedByPlayer = firedByPlayer;
         Destroy(gameObject, lifetime);
     }
 
@@ -21,12 +23,23 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        EnemyHealth enemy = other.GetComponent<EnemyHealth>();
-
-        if (enemy != null)
+        if (firedByPlayer)
         {
-            enemy.TakeDamage(damage);
-            Destroy(gameObject);
+            EnemyController enemy = other.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            PlayerHealth player = other.GetComponent<PlayerHealth>();
+            if (player != null)
+            {
+                player.TakeDamage(damage);
+                Destroy(gameObject);
+            }
         }
     }
 }
