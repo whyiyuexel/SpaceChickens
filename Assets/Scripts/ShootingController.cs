@@ -9,6 +9,9 @@ public class ShootingController : MonoBehaviour
     private float nextFireTime;
     private Camera mainCam;
 
+    private float fireRateMultiplier = 1f;
+    private int bonusBullets = 0;
+
     void Start()
     {
         mainCam = Camera.main;
@@ -19,10 +22,12 @@ public class ShootingController : MonoBehaviour
         Mouse mouse = Mouse.current;
         if (mouse == null || currentGun == null) return;
 
+        float upgradedFireRate = currentGun.fireRate * fireRateMultiplier;
+
         if (mouse.leftButton.isPressed && Time.time >= nextFireTime)
         {
             Shoot();
-            nextFireTime = Time.time + 1f / currentGun.fireRate;
+            nextFireTime = Time.time + 1f / upgradedFireRate;
         }
     }
 
@@ -30,7 +35,9 @@ public class ShootingController : MonoBehaviour
     {
         Vector3 aimDirection = GetAimDirection();
 
-        for (int i = 0; i < currentGun.bulletsPerShot; i++)
+        int totalBullets = currentGun.bulletsPerShot + bonusBullets;
+
+        for (int i = 0; i < totalBullets; i++)
         {
             float spread = Random.Range(-currentGun.spreadAngle, currentGun.spreadAngle);
             Quaternion rotation = Quaternion.Euler(0f, spread, 0f);
@@ -67,5 +74,13 @@ public class ShootingController : MonoBehaviour
     public void EquipGun(GunData newGun)
     {
         currentGun = newGun;
+    }
+
+    public void ApplyUpgrade(float fireRateBoost, int bulletBoost)
+    {
+        fireRateMultiplier += fireRateBoost;
+        bonusBullets += bulletBoost;
+
+        Debug.Log("Upgrade applied! Fire rate multiplier: " + fireRateMultiplier + ", bonus bullets: " + bonusBullets);
     }
 }
