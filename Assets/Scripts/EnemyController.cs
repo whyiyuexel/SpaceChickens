@@ -70,6 +70,7 @@ public class EnemyController : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            ScoreManager.Instance.AddScore(100);
             Destroy(gameObject);
         }
     }
