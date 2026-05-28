@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestBoth
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Test Both
-  health: 10000
+  health: 3
   moveSpeed: 2
   attackType: 2
   attackRange: 7

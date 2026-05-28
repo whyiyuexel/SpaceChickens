@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestMelee
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Test Melee
-  health: 10000
+  health: 3
   moveSpeed: 2
   attackType: 1
   attackRange: 5
