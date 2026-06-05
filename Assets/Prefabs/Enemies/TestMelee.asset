@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TestMelee
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Test Melee
-  health: 3
-  moveSpeed: 2
+  health: 10
+  moveSpeed: 6
   attackType: 1
   attackRange: 5
   gun: {fileID: 0}

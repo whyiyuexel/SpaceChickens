@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TestRange
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Test Ranged
-  health: 3
-  moveSpeed: 2
+  health: 8
+  moveSpeed: 4
   attackType: 0
   attackRange: 5
   gun: {fileID: 11400000, guid: fe74029669fce4af49921d5a671c26f2, type: 2}

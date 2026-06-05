@@ -6,6 +6,13 @@ public class ShootingController : MonoBehaviour
     public GunData currentGun;
     public Transform firePoint;
 
+    [Header("Animation")]
+    public Animator animator;
+    public string shootAnimTrigger = "Shoot";
+
+    [Header("Model Orientation")]
+    public Vector3 modelRotationOffset = Vector3.zero;
+
     private float nextFireTime;
     private Camera mainCam;
 
@@ -24,17 +31,25 @@ public class ShootingController : MonoBehaviour
 
         float upgradedFireRate = currentGun.fireRate * fireRateMultiplier;
 
+        Vector3 aimDirection = GetAimDirection();
+        if (aimDirection.sqrMagnitude > 0.001f)
+        {
+            transform.rotation = Quaternion.LookRotation(aimDirection) * Quaternion.Euler(modelRotationOffset);
+        }
+
         if (mouse.leftButton.isPressed && Time.time >= nextFireTime)
         {
-            Shoot();
+            Shoot(aimDirection);
+            if (animator && !string.IsNullOrEmpty(shootAnimTrigger))
+            {
+                animator.SetTrigger(shootAnimTrigger);
+            }
             nextFireTime = Time.time + 1f / upgradedFireRate;
         }
     }
 
-    void Shoot()
+    void Shoot(Vector3 aimDirection)
     {
-        Vector3 aimDirection = GetAimDirection();
-
         int totalBullets = currentGun.bulletsPerShot + bonusBullets;
 
         for (int i = 0; i < totalBullets; i++)
@@ -43,7 +58,7 @@ public class ShootingController : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0f, spread, 0f);
             Vector3 direction = rotation * aimDirection;
 
-            Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position;
+            Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position + Vector3.up * 1.5f;
             GameObject bullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
 
             Bullet bulletScript = bullet.GetComponent<Bullet>();

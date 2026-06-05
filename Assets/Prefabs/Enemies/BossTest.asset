@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4ee81f60157f40b3af463c7d344db06, type: 3}
-  m_Name: TestBoth
+  m_Name: BossTest
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: Test Both
-  health: 15
-  moveSpeed: 5
+  enemyName: Boss Chicken
+  health: 100
+  moveSpeed: 6
   attackType: 2
-  attackRange: 7
-  gun: {fileID: 11400000, guid: fe74029669fce4af49921d5a671c26f2, type: 2}
+  attackRange: 10
+  gun: {fileID: 11400000, guid: 0c21f07a2afe94440bae7a44f53c8a8d, type: 2}
   meleeRange: 3
   meleeCooldown: 2
   meleeDamage: 1
