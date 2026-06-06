@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Boss Chicken
   health: 100
-  moveSpeed: 6
+  moveSpeed: 8
   attackType: 2
-  attackRange: 10
-  gun: {fileID: 11400000, guid: 0c21f07a2afe94440bae7a44f53c8a8d, type: 2}
-  meleeRange: 3
+  attackRange: 20
+  gun: {fileID: 11400000, guid: 24d7e9aec52bb4f98aba98c9eb887d04, type: 2}
+  meleeRange: 8
   meleeCooldown: 2
   meleeDamage: 1
   meleeWindup: 1
-  meleeIndicatorWidth: 2
+  meleeIndicatorWidth: 15
   meleeIndicatorLength: 4

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bfbd3f5554e74c5fb1323267e8b6674, type: 3}
+  m_Name: Upgraded Pistol
+  m_EditorClassIdentifier: Assembly-CSharp::GunData
+  gunName: Upgraded Pistol
+  bulletPrefab: {fileID: 3863339809912370368, guid: f5d39c8f64b2d4aa2b885ed5a37604f0, type: 3}
+  fireRate: 2
+  bulletSpeed: 20
+  bulletLifetime: 3
+  bulletsPerShot: 1
+  spreadAngle: 0

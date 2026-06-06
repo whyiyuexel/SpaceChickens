@@ -13,6 +13,16 @@ public class Bullet : MonoBehaviour
         this.direction = direction;
         this.speed = speed;
         this.firedByPlayer = firedByPlayer;
+        
+        // Orient the bullet to face its travel direction
+        if (direction != Vector3.zero)
+        {
+            // By default, Quaternion.LookRotation aligns the Z-axis with the direction.
+            // If you used a Unity Cylinder or Capsule, its length is along the Y-axis.
+            // We multiply by Euler(90, 0, 0) to pitch it forward so the Y-axis points in the travel direction.
+            transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(90f, 0f, 0f);
+        }
+
         Destroy(gameObject, lifetime);
     }
 

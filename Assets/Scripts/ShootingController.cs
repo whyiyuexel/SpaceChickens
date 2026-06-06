@@ -16,12 +16,17 @@ public class ShootingController : MonoBehaviour
     private float nextFireTime;
     private Camera mainCam;
 
-    private float fireRateMultiplier = 1f;
-    private int bonusBullets = 0;
+    [Header("Upgrade System")]
+    public GunTier[] gunTiers; // Array of 3 (Pistol, Machine Gun, Minigun)
+    private int currentGunLevel = 0; // 0=Pistol, 1=MachineGun, 2=Minigun
+    private int currentBulletLevel = 0; // 0=Basic, 1=Upgraded, 2=Max
 
     void Start()
     {
         mainCam = Camera.main;
+        
+        // Ensure starting gun is properly equipped if the user populated the tiers
+        UpdateEquippedGun();
     }
 
     void Update()
@@ -29,7 +34,7 @@ public class ShootingController : MonoBehaviour
         Mouse mouse = Mouse.current;
         if (mouse == null || currentGun == null) return;
 
-        float upgradedFireRate = currentGun.fireRate * fireRateMultiplier;
+        float upgradedFireRate = currentGun.fireRate; // Old multiplier removed
 
         Vector3 aimDirection = GetAimDirection();
         if (aimDirection.sqrMagnitude > 0.001f)
@@ -50,7 +55,7 @@ public class ShootingController : MonoBehaviour
 
     void Shoot(Vector3 aimDirection)
     {
-        int totalBullets = currentGun.bulletsPerShot + bonusBullets;
+        int totalBullets = currentGun.bulletsPerShot; // Old bonus removed
 
         for (int i = 0; i < totalBullets; i++)
         {
@@ -91,11 +96,45 @@ public class ShootingController : MonoBehaviour
         currentGun = newGun;
     }
 
-    public void ApplyUpgrade(float fireRateBoost, int bulletBoost)
+    public void UpgradeGun()
     {
-        fireRateMultiplier += fireRateBoost;
-        bonusBullets += bulletBoost;
-
-        Debug.Log("Upgrade applied! Fire rate multiplier: " + fireRateMultiplier + ", bonus bullets: " + bonusBullets);
+        if (gunTiers == null || gunTiers.Length == 0) return;
+        
+        // Increase gun type level (stay on same bullet level)
+        currentGunLevel = Mathf.Min(currentGunLevel + 1, gunTiers.Length - 1);
+        UpdateEquippedGun();
+        Debug.Log($"Gun Upgraded! Gun Level: {currentGunLevel}, Bullet Level: {currentBulletLevel}, Now Using: {currentGun.name}");
     }
+
+    public void UpgradeBullet()
+    {
+        if (gunTiers == null || gunTiers.Length == 0) return;
+
+        // Increase bullet type level (stay on same gun type)
+        currentBulletLevel = Mathf.Min(currentBulletLevel + 1, 2);
+        UpdateEquippedGun();
+        Debug.Log($"Bullet Upgraded! Gun Level: {currentGunLevel}, Bullet Level: {currentBulletLevel}, Now Using: {currentGun.name}");
+    }
+
+    private void UpdateEquippedGun()
+    {
+        if (gunTiers == null || gunTiers.Length == 0) return;
+        
+        GunTier activeTier = gunTiers[Mathf.Clamp(currentGunLevel, 0, gunTiers.Length - 1)];
+        
+        switch(currentBulletLevel)
+        {
+            case 0: EquipGun(activeTier.basicBullet); break;
+            case 1: EquipGun(activeTier.upgradedBullet); break;
+            case 2: EquipGun(activeTier.maxBullet); break;
+        }
+    }
+}
+
+[System.Serializable]
+public class GunTier
+{
+    public GunData basicBullet;
+    public GunData upgradedBullet;
+    public GunData maxBullet;
 }

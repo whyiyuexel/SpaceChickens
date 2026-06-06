@@ -81,21 +81,11 @@ public class EnemyController : MonoBehaviour
         bool canMelee = data.attackType == AttackType.Melee || data.attackType == AttackType.Both;
         bool didAttack = false;
 
-        // Ranged Attack
-        if (canRanged && data.gun != null && distanceToPlayer <= data.attackRange && Time.time >= nextRangedTime)
-        {
-            Shoot(directionToPlayer);
-            if (animator) 
-            {
-                if (!string.IsNullOrEmpty(meleeAnimTrigger)) animator.ResetTrigger(meleeAnimTrigger);
-                if (!string.IsNullOrEmpty(rangedAnimTrigger)) animator.SetTrigger(rangedAnimTrigger);
-            }
-            nextRangedTime = Time.time + 1f / data.gun.fireRate;
-            didAttack = true;
-        }
+        // DEBUG: Uncomment to diagnose melee issues
+        // Debug.Log($"{gameObject.name}: canMelee={canMelee}, dist={distanceToPlayer:F1}, meleeRange={data.meleeRange}, cooldownReady={Time.time >= nextMeleeTime}, prefab={meleeIndicatorPrefab != null}, isJumping={isJumping}");
 
-        // Melee Attack
-        if (!didAttack && canMelee && distanceToPlayer <= data.meleeRange && Time.time >= nextMeleeTime)
+        // Melee Attack (checked FIRST so it takes priority when player is close)
+        if (canMelee && distanceToPlayer <= data.meleeRange && Time.time >= nextMeleeTime)
         {
             if (jumpHeight > 0f)
             {
@@ -113,6 +103,19 @@ public class EnemyController : MonoBehaviour
                 StartCoroutine(GroundMeleePause());
             }
             nextMeleeTime = Time.time + data.meleeCooldown;
+            didAttack = true;
+        }
+
+        // Ranged Attack (only if melee didn't fire)
+        if (!didAttack && canRanged && data.gun != null && distanceToPlayer <= data.attackRange && Time.time >= nextRangedTime)
+        {
+            Shoot(directionToPlayer);
+            if (animator) 
+            {
+                if (!string.IsNullOrEmpty(meleeAnimTrigger)) animator.ResetTrigger(meleeAnimTrigger);
+                if (!string.IsNullOrEmpty(rangedAnimTrigger)) animator.SetTrigger(rangedAnimTrigger);
+            }
+            nextRangedTime = Time.time + 1f / data.gun.fireRate;
             didAttack = true;
         }
 
@@ -168,6 +171,9 @@ public class EnemyController : MonoBehaviour
             if (!string.IsNullOrEmpty(meleeAnimTrigger)) animator.SetTrigger(meleeAnimTrigger);
         }
 
+        // Spawn the circle indicator NOW so it grows while the boss is in the air
+        SpawnCircleIndicator(jumpDuration);
+
         Vector3 startPos = transform.position;
 
         // Jump up and down in a parabolic arc
@@ -187,10 +193,26 @@ public class EnemyController : MonoBehaviour
         // Snap back to ground
         transform.position = new Vector3(startPos.x, baseY, startPos.z);
 
-        // Deal damage on landing
-        MeleeAttack(direction);
-
         isJumping = false;
+    }
+
+    private void SpawnCircleIndicator(float duration)
+    {
+        // Create a real visible Cylinder (same pattern as the Quad-based rectangular indicator)
+        GameObject indicator = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        indicator.name = "BossCircleMelee";
+        indicator.transform.position = transform.position;
+
+        // Remove collider so it doesn't push anything
+        Collider col = indicator.GetComponent<Collider>();
+        if (col != null) DestroyImmediate(col);
+
+        // Make it red
+        Renderer rend = indicator.GetComponent<Renderer>();
+        if (rend != null) rend.material.color = Color.red;
+
+        CircleMeleeIndicator circle = indicator.AddComponent<CircleMeleeIndicator>();
+        circle.Initialize(duration, data.meleeDamage, data.meleeIndicatorWidth, transform);
     }
 
     private IEnumerator GroundMeleePause()
@@ -216,14 +238,33 @@ public class EnemyController : MonoBehaviour
         if (meleeIndicatorPrefab == null) return;
 
         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.Euler(90f, angle, 0f);
-        GameObject indicator = Instantiate(meleeIndicatorPrefab, transform.position, rotation);
+        
+        GameObject indicator = Instantiate(meleeIndicatorPrefab, transform.position, Quaternion.identity);
 
+        // Auto-strip all colliders so the indicator can't push the boss or player around
+        foreach (var col in indicator.GetComponentsInChildren<Collider>())
+        {
+            Destroy(col);
+        }
+
+        // Try the rectangular script first
         MeleeAttackIndicator script = indicator.GetComponent<MeleeAttackIndicator>();
         if (script != null)
         {
+            indicator.transform.rotation = Quaternion.Euler(90f, angle, 0f);
             script.Initialize(data.meleeWindup, data.meleeDamage, data.meleeIndicatorWidth, data.meleeIndicatorLength, transform, direction);
+            return;
         }
+
+        // Try the circular script
+        CircleMeleeIndicator circleScript = indicator.GetComponent<CircleMeleeIndicator>();
+        if (circleScript == null)
+        {
+            // Auto-add the script if the user forgot
+            circleScript = indicator.AddComponent<CircleMeleeIndicator>();
+        }
+        indicator.transform.rotation = Quaternion.Euler(0f, angle, 0f);
+        circleScript.Initialize(data.meleeWindup, data.meleeDamage, data.meleeIndicatorWidth, transform);
     }
 
     void Shoot(Vector3 direction)

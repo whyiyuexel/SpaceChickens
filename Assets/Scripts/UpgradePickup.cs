@@ -1,13 +1,14 @@
 using UnityEngine;
 
+public enum UpgradeType { Gun, Bullet, Health }
+
 public class UpgradePickup : MonoBehaviour
 {
+    public UpgradeType upgradeType = UpgradeType.Gun;
+
     public float rotateSpeed = 90f;
     public float bobSpeed = 2f;
     public float bobHeight = 0.25f;
-
-    public float fireRateBoost = 0.5f;
-    public int bulletBoost = 1;
 
     private Vector3 startPosition;
 
@@ -26,11 +27,33 @@ public class UpgradePickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ShootingController shooting = other.GetComponent<ShootingController>();
+        if (!other.CompareTag("Player")) return;
 
-        if (shooting != null)
+        ShootingController shooting = other.GetComponentInParent<ShootingController>();
+        PlayerHealth health = other.GetComponentInParent<PlayerHealth>();
+
+        bool collected = false;
+
+        if (upgradeType == UpgradeType.Gun || upgradeType == UpgradeType.Bullet)
         {
-            shooting.ApplyUpgrade(fireRateBoost, bulletBoost);
+            if (shooting != null)
+            {
+                if (upgradeType == UpgradeType.Gun) shooting.UpgradeGun();
+                else if (upgradeType == UpgradeType.Bullet) shooting.UpgradeBullet();
+                collected = true;
+            }
+        }
+        else if (upgradeType == UpgradeType.Health)
+        {
+            if (health != null)
+            {
+                health.UpgradeHealth();
+                collected = true;
+            }
+        }
+
+        if (collected)
+        {
             Destroy(gameObject);
         }
     }

@@ -115,12 +115,14 @@ public class MagicAnimatorSetup : EditorWindow
         
         AnimatorStateMachine rootStateMachine = controller.layers[0].stateMachine;
 
-        // Clear old states
+        // Clear old states, transitions, and parameters
         var states = rootStateMachine.states;
         foreach (var childState in states)
         {
             rootStateMachine.RemoveState(childState.state);
         }
+        rootStateMachine.anyStateTransitions = new AnimatorStateTransition[0];
+        controller.parameters = new AnimatorControllerParameter[0];
 
         // Setup Idle state
         AnimatorState idleState = rootStateMachine.AddState("Idle");
