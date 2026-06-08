@@ -3,7 +3,8 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;
-    public Vector3 offset = new Vector3(0f, 10f, 0f);
+    public float height = 20f;
+    public float distance = 10f;
     public float smoothSpeed = 5f;
 
     void LateUpdate()
@@ -11,8 +12,14 @@ public class CameraFollow : MonoBehaviour
         if (target == null)
             return;
 
-        Vector3 desiredPosition = target.position + offset;
+        // Fixed isometric position - always behind and above in world space
+        Vector3 desiredPosition = new Vector3(
+            target.position.x,
+            target.position.y + height,
+            target.position.z - distance
+        );
+
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-        transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        transform.rotation = Quaternion.Euler(45f, 0f, 0f);
     }
 }
