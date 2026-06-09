@@ -3,8 +3,8 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;
-    public float height = 20f;
-    public float distance = 10f;
+    public float height = 30f;
+    public float distance = 30f;
     public float smoothSpeed = 5f;
 
     void LateUpdate()
@@ -20,6 +20,6 @@ public class CameraFollow : MonoBehaviour
         );
 
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-        transform.rotation = Quaternion.Euler(45f, 0f, 0f);
+        transform.rotation = Quaternion.Euler(60f, 0f, 0f);
     }
 }
