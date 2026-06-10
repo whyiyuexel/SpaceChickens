@@ -16,6 +16,7 @@ MonoBehaviour:
   health: 100
   moveSpeed: 8
   attackType: 2
+  scoreValue: 500
   attackRange: 20
   gun: {fileID: 11400000, guid: 24d7e9aec52bb4f98aba98c9eb887d04, type: 2}
   meleeRange: 8

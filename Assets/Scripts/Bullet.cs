@@ -40,6 +40,7 @@ public class Bullet : MonoBehaviour
             {
                 enemy.TakeDamage(damage);
                 Destroy(gameObject);
+                return;
             }
         }
         else
@@ -49,7 +50,14 @@ public class Bullet : MonoBehaviour
             {
                 player.TakeDamage(damage);
                 Destroy(gameObject);
+                return;
             }
+        }
+
+        // Destroy bullet when hitting anything that isn't the shooter's target
+        if (!other.CompareTag("Player") && !other.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
         }
     }
 }

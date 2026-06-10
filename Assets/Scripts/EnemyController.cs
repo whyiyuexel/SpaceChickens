@@ -176,7 +176,7 @@ public class EnemyController : MonoBehaviour
         if (currentHealth <= 0)
         {
             SoundManager.Instance?.Play(SoundManager.Instance.enemyDie);
-            ScoreManager.Instance.AddScore(100);
+            ScoreManager.Instance.AddScore(data.scoreValue);
 
             if (WaveManager.Instance != null)
                 WaveManager.Instance.OnEnemyDefeated();

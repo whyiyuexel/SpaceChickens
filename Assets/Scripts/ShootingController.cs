@@ -99,14 +99,21 @@ public class ShootingController : MonoBehaviour
     }
 
     public void UpgradeGun()
-    {
-        if (gunTiers == null || gunTiers.Length == 0) return;
-        
-        // Increase gun type level (stay on same bullet level)
-        currentGunLevel = Mathf.Min(currentGunLevel + 1, gunTiers.Length - 1);
-        UpdateEquippedGun();
-        Debug.Log($"Gun Upgraded! Gun Level: {currentGunLevel}, Bullet Level: {currentBulletLevel}, Now Using: {currentGun.name}");
-    }
+{
+    if (gunTiers == null || gunTiers.Length == 0) return;
+    
+    currentGunLevel = Mathf.Min(currentGunLevel + 1, gunTiers.Length - 1);
+    UpdateEquippedGun();
+
+    // Tell GunManager to swap the visual model
+    GunManager gunManager = GetComponentInChildren<GunManager>();
+    if (gunManager != null)
+        gunManager.EquipGun(currentGunLevel);
+    else
+        Debug.LogWarning("No GunManager found in children!");
+
+    Debug.Log($"Gun Upgraded! Gun Level: {currentGunLevel}, Bullet Level: {currentBulletLevel}, Now Using: {currentGun.name}");
+}
 
     public void UpgradeBullet()
     {
