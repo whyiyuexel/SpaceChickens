@@ -7,6 +7,7 @@ public class GameOverManager : MonoBehaviour
 
     [Header("UI")]
     public GameObject youDiedScreen;
+    public GameObject youWonScreen;
 
     void Awake()
     {
@@ -17,12 +18,22 @@ public class GameOverManager : MonoBehaviour
     {
         if (youDiedScreen != null)
             youDiedScreen.SetActive(false);
+        if (youWonScreen != null)
+            youWonScreen.SetActive(false);
     }
 
     public void ShowGameOver()
     {
         if (youDiedScreen != null)
             youDiedScreen.SetActive(true);
+
+        Time.timeScale = 0f;
+    }
+
+    public void ShowWinScreen()
+    {
+        if (youWonScreen != null)
+            youWonScreen.SetActive(true);
 
         Time.timeScale = 0f;
     }

@@ -145,8 +145,9 @@ public class WaveManager : MonoBehaviour
 
         if (currentWaveIndex >= waves.Length)
         {
-            Debug.Log("[WaveManager] All waves completed!");
             UpdateWaveText("All Rounds Complete!");
+            if (GameOverManager.Instance != null)
+                GameOverManager.Instance.ShowWinScreen();
             return;
         }
 
