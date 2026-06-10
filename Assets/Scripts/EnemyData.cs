@@ -10,6 +10,9 @@ public class EnemyData : ScriptableObject
     public float moveSpeed = 2f;
     public AttackType attackType = AttackType.Ranged;
 
+    [Header("Score")]
+    public int scoreValue = 50; // points awarded when this enemy is killed
+
     [Header("Ranged")]
     public float attackRange = 10f;
     public GunData gun;

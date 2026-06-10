@@ -130,24 +130,24 @@ public class EnemyController : MonoBehaviour
     }
 
     public void TakeDamage(int damage)
+{
+    currentHealth -= damage;
+
+    if (flashRoutine != null)
+        StopCoroutine(flashRoutine);
+    flashRoutine = StartCoroutine(FlashHit());
+
+    if (currentHealth <= 0)
     {
-        currentHealth -= damage;
-
-        if (flashRoutine != null)
-            StopCoroutine(flashRoutine);
-        flashRoutine = StartCoroutine(FlashHit());
-
-        if (currentHealth <= 0)
-        {
-            SoundManager.Instance?.Play(SoundManager.Instance.enemyDie);
-            ScoreManager.Instance.AddScore(100);
-            Destroy(gameObject);
-        }
-        else
-        {
-            SoundManager.Instance?.Play(SoundManager.Instance.enemyHit);
-        }
+        SoundManager.Instance?.Play(SoundManager.Instance.enemyDie);
+        ScoreManager.Instance.AddScore(data.scoreValue); // uses enemy's score value
+        Destroy(gameObject);
     }
+    else
+    {
+        SoundManager.Instance?.Play(SoundManager.Instance.enemyHit);
+    }
+}
 
     private IEnumerator FlashHit()
     {
