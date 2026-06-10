@@ -55,6 +55,8 @@ public class ShootingController : MonoBehaviour
 
     void Shoot(Vector3 aimDirection)
     {
+        SoundManager.Instance?.Play(SoundManager.Instance.playerShoot);
+        
         int totalBullets = currentGun.bulletsPerShot; // Old bonus removed
 
         for (int i = 0; i < totalBullets; i++)

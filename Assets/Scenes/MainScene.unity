@@ -6100,6 +6100,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &846742394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 846742396}
+  - component: {fileID: 846742395}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &846742395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846742394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d264422e7e6de42f9a31b72d2d81cc4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  playerShoot: {fileID: 8300000, guid: b9a3257fa5f3a4165b893c233f685123, type: 3}
+  playerHit: {fileID: 8300000, guid: 0f79b72c22aab4d498465721a653dce6, type: 3}
+  playerDie: {fileID: 8300000, guid: 06b68f7e56d0349ec93439141ac4d1a9, type: 3}
+  enemyHit: {fileID: 8300000, guid: 9f0e0d99fdcc042aa82084f207bf72e5, type: 3}
+  enemyDie: {fileID: 8300000, guid: 81d06bfdc3da4430ab4fc4744a9cfc3e, type: 3}
+  enemyShoot: {fileID: 8300000, guid: 9f4260fcb3d394b6b9d1087a4be01f89, type: 3}
+--- !u!4 &846742396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846742394}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.32778, y: 0.22944, z: 0.32778}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &870521865
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15941,3 +15991,4 @@ SceneRoots:
   - {fileID: 1197110091715275095}
   - {fileID: 6331922038341271354}
   - {fileID: 106215689}
+  - {fileID: 846742396}

@@ -37,6 +37,8 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth -= damage;
 
+        SoundManager.Instance?.Play(SoundManager.Instance.playerHit);
+
         if (flashRoutine != null)
             StopCoroutine(flashRoutine);
         flashRoutine = StartCoroutine(FlashHit());
@@ -78,6 +80,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
+        SoundManager.Instance?.Play(SoundManager.Instance.playerDie);
         // TODO: game over screen, respawn, etc.
         gameObject.SetActive(false);
     }

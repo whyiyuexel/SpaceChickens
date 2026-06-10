@@ -139,8 +139,13 @@ public class EnemyController : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            SoundManager.Instance?.Play(SoundManager.Instance.enemyDie);
             ScoreManager.Instance.AddScore(100);
             Destroy(gameObject);
+        }
+        else
+        {
+            SoundManager.Instance?.Play(SoundManager.Instance.enemyHit);
         }
     }
 
@@ -270,6 +275,7 @@ public class EnemyController : MonoBehaviour
     void Shoot(Vector3 direction)
     {
         if (data.gun.bulletPrefab == null) return;
+        SoundManager.Instance?.Play(SoundManager.Instance.enemyShoot);
 
         Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position;
 
