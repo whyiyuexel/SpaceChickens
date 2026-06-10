@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4479a2fb347433794b101a102287a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradePickup
-  upgradeType: 0
+  upgradeType: 1
   rotateSpeed: 90
   bobSpeed: 2
   bobHeight: 0.25

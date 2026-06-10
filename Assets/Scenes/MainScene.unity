@@ -15912,18 +15912,94 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
       propertyPath: modelRotationOffset.y
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[0].maxBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 1e0f2d16a97db4e9299d8ff5eae466b4, type: 2}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[1].maxBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 38164d2d019034b6a85e8849fedb7f17, type: 2}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[2].maxBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a8a7665ef81f49b389be7cfd555a9d6, type: 2}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[0].basicBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c21f07a2afe94440bae7a44f53c8a8d, type: 2}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[1].basicBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 917d94de94b454b00aa83d13a962ebe4, type: 2}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[2].basicBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 80f0193ece9494189947e5f1baa770f7, type: 2}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[0].upgradedBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 46d86ea5960514c6bab5b6b3b3a5300e, type: 2}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[1].upgradedBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 67e3a9f03981441b4a2cecb7c9d03d88, type: 2}
+    - target: {fileID: 204875692822018974, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: gunTiers.Array.data[2].upgradedBullet
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d3aba4fa756f4e91976b1c18f3a638c, type: 2}
     - target: {fileID: 767229794626598004, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7928995559220096348, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928995559220096348, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928995559220096348, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.66
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8723435337790229159, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6331922038341271356}
   m_SourcePrefab: {fileID: 100100000, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+--- !u!1 &6331922038341271355 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8723435337790229159, guid: f3a948bb3cd2640c084b5478332e7dfc, type: 3}
+  m_PrefabInstance: {fileID: 6331922038341271354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6331922038341271356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6331922038341271355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c762a9f7d39574206bbe3587ea7fd33a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GunManager
+  gunPrefabs:
+  - {fileID: 1694449805434718, guid: 6f1a7354265853f44b0ed5e2e43676ad, type: 3}
+  - {fileID: 1117582899397640, guid: 689946d975a0e55449b1e7ae41933e73, type: 3}
+  - {fileID: 1487774384131766, guid: ee329c3cd08e58645834d20702d7f6c6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
