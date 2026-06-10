@@ -81,8 +81,11 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         SoundManager.Instance?.Play(SoundManager.Instance.playerDie);
-        // TODO: game over screen, respawn, etc.
-        gameObject.SetActive(false);
+    
+        if (GameOverManager.Instance != null)
+            GameOverManager.Instance.ShowGameOver();
+        else
+            gameObject.SetActive(false);
     }
 
     public int GetCurrentHealth() => currentHealth;
