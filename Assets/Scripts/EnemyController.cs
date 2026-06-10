@@ -316,7 +316,8 @@ public class EnemyController : MonoBehaviour
 
     void Shoot(Vector3 direction)
     {
-        if (data.gun.bulletPrefab == null) return;
+        if (data.gun == null || data.gun.bulletPrefab == null) return;
+        
         SoundManager.Instance?.Play(SoundManager.Instance.enemyShoot, SoundManager.Instance.enemyShootVolume);
 
         Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position;

@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e4a350ca956b40f09971260537180e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 24
+  moveSpeed: 16
   dodgeDistance: 8
   dodgeDuration: 0.1
   dodgeCooldown: 1

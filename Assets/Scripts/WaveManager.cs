@@ -99,7 +99,6 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log($"[WaveManager] Start() called. Waves configured: {(waves != null ? waves.Length : 0)}");
         StartNextWave();
     }
 
@@ -164,7 +163,6 @@ public class WaveManager : MonoBehaviour
         }
 
         waveInProgress = true;
-        Debug.Log($"[WaveManager] Starting wave {currentWaveIndex}: '{wave.waveName}', enemies to defeat: {enemiesToDefeat}");
         UpdateWaveText(wave.waveName);
         UpdateUI();
 
@@ -173,8 +171,6 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SpawnWaveRoutine(Wave wave)
     {
-        Debug.Log($"[WaveManager] SpawnWaveRoutine started for '{wave.waveName}'");
-
         // Spawn upgrades immediately, avoiding duplicate locations within the same wave
         if (wave.upgradeSpawns != null)
         {
@@ -221,7 +217,6 @@ public class WaveManager : MonoBehaviour
         // Wait before enemies arrive
         if (wave.delayBeforeSpawn > 0f)
         {
-            Debug.Log($"[WaveManager] Waiting {wave.delayBeforeSpawn}s before spawning enemies...");
             yield return new WaitForSeconds(wave.delayBeforeSpawn);
         }
 
@@ -232,29 +227,19 @@ public class WaveManager : MonoBehaviour
             {
                 if (entry.enemyPrefab == null)
                 {
-                    Debug.LogWarning("[WaveManager] Skipping entry — enemyPrefab is null!");
                     continue;
                 }
-
-                Debug.Log($"[WaveManager] Spawning {entry.count}x {entry.enemyPrefab.name}");
 
                 for (int i = 0; i < entry.count; i++)
                 {
                     Vector3 pos = GetSpawnPosition(entry);
                     GameObject spawned = Instantiate(entry.enemyPrefab, pos, Quaternion.identity);
-                    Debug.Log($"[WaveManager] Spawned '{spawned.name}' at {pos}");
 
                     if (entry.spawnInterval > 0f && i < entry.count - 1)
                         yield return new WaitForSeconds(entry.spawnInterval);
                 }
             }
         }
-        else
-        {
-            Debug.LogWarning("[WaveManager] enemySpawns is null!");
-        }
-
-        Debug.Log("[WaveManager] SpawnWaveRoutine finished.");
     }
 
     // ───────────────────────── Helpers ───────────────────────────
