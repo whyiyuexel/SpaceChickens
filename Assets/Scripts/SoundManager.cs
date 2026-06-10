@@ -14,6 +14,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip enemyDie;
     public AudioClip enemyShoot;
 
+    [Header("Volume")]
+    [Range(0f, 1f)]
+    public float enemyShootVolume = 0.3f;
+
     private AudioSource audioSource;
 
     void Awake()
@@ -35,5 +39,11 @@ public class SoundManager : MonoBehaviour
     {
         if (clip != null)
             audioSource.PlayOneShot(clip);
+    }
+
+    public void Play(AudioClip clip, float volume)
+    {
+        if (clip != null)
+            audioSource.PlayOneShot(clip, volume);
     }
 }

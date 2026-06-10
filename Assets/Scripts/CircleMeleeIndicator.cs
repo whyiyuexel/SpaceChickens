@@ -67,14 +67,15 @@ public class CircleMeleeIndicator : MonoBehaviour
         }
 
         // Position the outer disc on the ground under the enemy
-        transform.position = new Vector3(enemy.position.x, 0.1f, enemy.position.z);
+        float groundY = GetGroundY(enemy.position);
+        transform.position = new Vector3(enemy.position.x, groundY + 0.1f, enemy.position.z);
 
         // Grow the inner fill disc from 0% to 100% of the outer disc
         float fillScale = targetRadius * progress;
         fillDisc.transform.localScale = new Vector3(fillScale, 0.2f, fillScale);
 
         // Position fill slightly above the outer disc so it renders on top
-        fillDisc.transform.position = new Vector3(enemy.position.x, 0.15f, enemy.position.z);
+        fillDisc.transform.position = new Vector3(enemy.position.x, groundY + 0.15f, enemy.position.z);
     }
 
     void DealDamage()
@@ -100,5 +101,27 @@ public class CircleMeleeIndicator : MonoBehaviour
     void OnDestroy()
     {
         if (fillDisc != null) Destroy(fillDisc);
+    }
+
+    private float GetGroundY(Vector3 origin)
+    {
+        // Temporarily disable enemy colliders so the ray doesn't hit the enemy itself
+        Collider[] enemyCols = null;
+        if (enemy != null)
+        {
+            enemyCols = enemy.GetComponentsInChildren<Collider>();
+            foreach (var c in enemyCols) if (c != null) c.enabled = false;
+        }
+
+        RaycastHit hit;
+        float result = origin.y;
+        if (Physics.Raycast(origin + Vector3.up * 10f, Vector3.down, out hit, 50f))
+            result = hit.point.y;
+
+        // Re-enable
+        if (enemyCols != null)
+            foreach (var c in enemyCols) if (c != null) c.enabled = true;
+
+        return result;
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
 
 public class EnemyController : MonoBehaviour
@@ -23,6 +24,7 @@ public class EnemyController : MonoBehaviour
     public string walkAnimTrigger = "";
 
     private Animator animator;
+    private NavMeshAgent agent;
     private Transform player;
     private float nextRangedTime;
     private float nextMeleeTime;
@@ -37,9 +39,20 @@ public class EnemyController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
 
         if (data != null)
+        {
             currentHealth = data.health;
+
+            // Sync NavMeshAgent speed with EnemyData
+            if (agent != null)
+            {
+                agent.speed = data.moveSpeed;
+                agent.stoppingDistance = data.meleeRange * 0.9f;
+                agent.updateRotation = false; // We handle rotation ourselves
+            }
+        }
 
         // FBX models have renderers on child objects
         enemyRenderers = GetComponentsInChildren<Renderer>();
@@ -58,6 +71,15 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        // Kill zone — destroy if fallen off the map
+        if (transform.position.y < -10f)
+        {
+            if (WaveManager.Instance != null)
+                WaveManager.Instance.OnEnemyDefeated();
+            Destroy(gameObject);
+            return;
+        }
+
         if (player == null || data == null || isJumping) return;
 
         Vector3 directionToPlayer = (player.position - transform.position).normalized;
@@ -73,8 +95,22 @@ public class EnemyController : MonoBehaviour
         bool isMoving = false;
         if (distanceToPlayer > data.meleeRange)
         {
-            transform.position += directionToPlayer * data.moveSpeed * Time.deltaTime;
+            if (agent != null && agent.isOnNavMesh)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(player.position);
+            }
+            else
+            {
+                transform.position += directionToPlayer * data.moveSpeed * Time.deltaTime;
+            }
             isMoving = true;
+        }
+        else
+        {
+            // Stop the agent when in melee range
+            if (agent != null && agent.isOnNavMesh)
+                agent.isStopped = true;
         }
 
         bool canRanged = data.attackType == AttackType.Ranged || data.attackType == AttackType.Both;
@@ -120,7 +156,7 @@ public class EnemyController : MonoBehaviour
         }
 
         // Walk Animation
-        if (isMoving && !didAttack && !string.IsNullOrEmpty(walkAnimTrigger) && animator)
+        if (isMoving && !didAttack && !string.IsNullOrEmpty(walkAnimTrigger) && animator && animator.runtimeAnimatorController != null)
         {
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
             {
@@ -141,6 +177,10 @@ public class EnemyController : MonoBehaviour
         {
             SoundManager.Instance?.Play(SoundManager.Instance.enemyDie);
             ScoreManager.Instance.AddScore(100);
+
+            if (WaveManager.Instance != null)
+                WaveManager.Instance.OnEnemyDefeated();
+
             Destroy(gameObject);
         }
         else
@@ -170,6 +210,7 @@ public class EnemyController : MonoBehaviour
     private IEnumerator JumpMeleeAttack(Vector3 direction)
     {
         isJumping = true;
+        if (agent != null && agent.isOnNavMesh) agent.enabled = false;
         if (animator) 
         {
             if (!string.IsNullOrEmpty(rangedAnimTrigger)) animator.ResetTrigger(rangedAnimTrigger);
@@ -198,6 +239,7 @@ public class EnemyController : MonoBehaviour
         // Snap back to ground
         transform.position = new Vector3(startPos.x, baseY, startPos.z);
 
+        if (agent != null) agent.enabled = true;
         isJumping = false;
     }
 
@@ -275,7 +317,7 @@ public class EnemyController : MonoBehaviour
     void Shoot(Vector3 direction)
     {
         if (data.gun.bulletPrefab == null) return;
-        SoundManager.Instance?.Play(SoundManager.Instance.enemyShoot);
+        SoundManager.Instance?.Play(SoundManager.Instance.enemyShoot, SoundManager.Instance.enemyShootVolume);
 
         Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position;
 

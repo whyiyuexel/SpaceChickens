@@ -33,6 +33,14 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (transform.position.y < -10f)
+        {
+            Die();
+        }
+    }
+
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;

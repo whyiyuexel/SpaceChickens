@@ -62,7 +62,7 @@ public class MeleeAttackIndicator : MonoBehaviour
         transform.localScale = new Vector3(width, targetLength, 1f);
 
         Vector3 pos = enemy.position + attackDirection * (targetLength * 0.5f);
-        pos.y = 0.01f;
+        pos.y = GetGroundY(enemy.position) + 0.01f;
         transform.position = pos;
 
         Renderer rend = GetComponent<Renderer>();
@@ -103,5 +103,27 @@ public class MeleeAttackIndicator : MonoBehaviour
                     playerHealth.TakeDamage(damage);
             }
         }
+    }
+
+    private float GetGroundY(Vector3 origin)
+    {
+        // Temporarily disable enemy colliders so the ray doesn't hit the enemy itself
+        Collider[] enemyCols = null;
+        if (enemy != null)
+        {
+            enemyCols = enemy.GetComponentsInChildren<Collider>();
+            foreach (var c in enemyCols) if (c != null) c.enabled = false;
+        }
+
+        RaycastHit hit;
+        float result = origin.y;
+        if (Physics.Raycast(origin + Vector3.up * 10f, Vector3.down, out hit, 50f))
+            result = hit.point.y;
+
+        // Re-enable
+        if (enemyCols != null)
+            foreach (var c in enemyCols) if (c != null) c.enabled = true;
+
+        return result;
     }
 }
